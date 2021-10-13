@@ -1,0 +1,64 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 19.04.2021 19:45:33
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11                  ;loads the adresess of values into A0,A1,A2,
+00001000  41F9 0000104E             12          LEA     test,A0             ;in c++: i is A0 
+00001006  43F9 00001073             13          LEA     words,A1            ;in c++: words = 0 
+0000100C  45F9 00001072             14          LEA     lastspace,A2        ;in c++: last_space = true   
+00001012  1211                      15          MOVE.B  (A1),D1             ;copies words value into D1
+00001014  5201                      16          ADD.B   #1,D1               ;to start count from 0 adds 1 to words
+00001016  1412                      17          MOVE.B  (A2),D2             ;copies last_space value into D2
+00001018  4A10                      18  loop:   tst.b   (A0)                ;in c++: while( test_string[i]!=0)
+0000101A  6700 0030                 19          BEQ     finish
+0000101E  1010                      20          MOVE.B  (A0),D0
+00001020  B43C 0000                 21          CMP.B   #0,D2               ;in c++: if(!last_space         
+00001024  6600 000C                 22          BNE     if
+00001028  B03C 0020                 23          CMP.B   #$20,D0             ;in c++: && test_string[i]==' ')
+0000102C  6600 0004                 24          BNE     if
+00001030  5201                      25          ADD.B   #1,D1               ;in c++: words=words+1
+00001032  B03C 0020                 26  if:     CMP.B   #$20,D0             ;in c++: if(test_string[i]==' ')
+00001036  6600 000A                 27          BNE     else
+0000103A  143C 0001                 28          MOVE.B  #1,D2               ;in c++: last_space = true
+0000103E  6000 0006                 29          BRA     update
+00001042  143C 0000                 30  else:   MOVE.B  #0,D2               ;in c++: last_space = false
+00001046  10C0                      31  update: MOVE.B  D0,(A0)+            ;in c++: i++
+00001048  3601                      32          MOVE.W  D1,D3               ;load words result into D3
+0000104A  60CC                      33          BRA     loop                     
+0000104C                            34  
+0000104C                            35  finish:     
+0000104C  4E4F                      36          TRAP    #15           ; halt simulator
+0000104E                            37  
+0000104E                            38  * Put variables and constants here
+0000104E= 54 68 69 73 20 69 ...     39  test:       dc.b 'This is a  test  string longer now ',0
+00001072= 01                        40  lastspace:  dc.b  1         ;true = 1
+00001073                            41  words:      ds.b  0    
+00001073                            42  
+00001073                            43      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ELSE                1042
+FINISH              104C
+IF                  1032
+LASTSPACE           1072
+LOOP                1018
+START               1000
+TEST                104E
+UPDATE              1046
+WORDS               1073

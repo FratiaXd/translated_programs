@@ -1,0 +1,44 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 19.04.2021 19:48:57
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : char replace
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11      
+00001000  41F9 00001020             12          LEA     test,A0     ; move char address to A0
+00001006  4A10                      13  while:  tst.b   (A0)    ; loop starts
+00001008  6700 0014                 14          BEQ     finish      ; loop ends
+0000100C  1010                      15          MOVE.B  (A0),D0     ; copy char
+0000100E  B03C 0020                 16          CMP.B   #$20,D0     ; compare
+00001012  6600 0006                 17          BNE     loop        ; jump to loop if not equal
+00001016  0600 003F                 18          ADD.B   #$3F,D0     ; add if equal
+0000101A  10C0                      19  loop:   MOVE.B  D0,(A0)+    ; replace char and post-increment A0
+0000101C  60E8                      20          bra     while       ; jump to the loop start
+0000101E                            21  finish:
+0000101E  4E4F                      22          TRAP    #15             ; halt simulator
+00001020                            23  
+00001020                            24  * Put variables and constants here
+00001020= 54 68 69 73 20 69 ...     25  test:   dc.b 'This is a test string',0
+00001036                            26  
+00001036                            27      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+FINISH              101E
+LOOP                101A
+START               1000
+TEST                1020
+WHILE               1006
